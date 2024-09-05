@@ -1,0 +1,13 @@
+<div class="container mb-5">
+    <ng-container *ngIf="chartData.labels.length; else loading">
+        <h3 class="display-6 mt-5 mb-3">{{chartDescription}}</h3>
+    </ng-container>
+        
+    <div class="d-flex justify-content-center align-items-center">
+        <canvas id="chart"></canvas>
+    </div>
+</div>
+
+<ng-template #loading>
+    <p class="text-secondary lead">Loading chart</p>
+</ng-template>

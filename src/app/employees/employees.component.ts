@@ -2,6 +2,7 @@ import type { Observable } from 'rxjs'
 import { Component, OnInit } from '@angular/core'
 import type { EmployeeEntryData, EmployeeDataBeforeRendering, EmployeeDataForRendering } from '../../types/models/employee.model'
 import type { DataBeforeRendering, DataForTableRendering } from '../../types/employees.component.type'
+import type { ChartData } from '../../types/chart.component.type'
 import { select, Store } from '@ngrx/store'
 import { AppState } from '../../types/models/app.state.model'
 import { getEmployeeEntryDataCollection } from './employees.actions'
@@ -21,6 +22,8 @@ class EmployeesComponent implements OnInit
     public employeesTableDescription = EMPLOYEES.tableDescription
     public dataForTableRendering: TableData<EmployeeDataForRendering>[] = []
     public employeesTableColumnNames = [EMPLOYEE_COLUMN_NAMES.name, EMPLOYEE_COLUMN_NAMES.totalTimeInMonth, EMPLOYEE_COLUMN_NAMES.action]
+    public employeesChartDescription = EMPLOYEES.chartDescription
+    public dataForChartRendering: ChartData = { labels: [], data: [] }
 
     constructor(private store: Store<AppState>)
     {
@@ -73,6 +76,11 @@ class EmployeesComponent implements OnInit
                     emphasize
                 })
             )
+
+            this.dataForChartRendering = {
+                labels: this.dataForTableRendering.map(({ data: { name } }: DataForTableRendering): string => name),
+                data: this.dataForTableRendering.map(({ data: { hoursWorked } }: DataForTableRendering): number => parseInt(hoursWorked))
+            };
         })
     }
 
